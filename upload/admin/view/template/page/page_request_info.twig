@@ -1,0 +1,114 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right"><a href="{{ back }}" data-toggle="tooltip" title="{{ button_back }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb['href'] }}">{{ breadcrumb['text'] }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-file"></i> {{ text_page_detail }}</h3>
+          </div>
+          <table class="table">
+            <tbody>
+              <tr>
+                <td style="width: 1%"><button data-toggle="tooltip" title="{{ text_page_form_title }}" class="btn btn-primary"><i class="fa fa-file fa-fw"></i></button></td>
+                <td><a href="{{ page_form_href }}" target="_blank">{{ page_form_title }}</a></td>
+              </tr>
+              <tr>
+                <td><button data-toggle="tooltip" title="{{ text_store }}" class="btn btn-primary"><i class="fa fa-sitemap fa-fw"></i></button></td>
+                <td><a href="{{ store_url }}" target="_blank">{{ store_name }}</a></td>
+              </tr>
+              {% if language_name %}
+              <tr>
+                <td><button data-toggle="tooltip" title="{{ text_language_name }}" class="btn btn-primary"><i class="fa fa-language fa-fw"></i></button></td>
+                <td>{{ language_name }}</td>
+              </tr>
+              {% endif %}
+              <tr>
+                <td><button data-toggle="tooltip" title="{{ text_date_added }}" class="btn btn-primary"><i class="fa fa-calendar fa-fw"></i></button></td>
+                <td>{{ date_added }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-user"></i> {{ text_customer_detail }}</h3>
+          </div>
+          <table class="table">
+            <tr>
+              <td style="width: 1%;"><button data-toggle="tooltip" title="{{ text_customer }}" class="btn btn-primary"><i class="fa fa-user fa-fw"></i></button></td>
+              <td>
+                {% if customer %}
+                <a href="{{ customer }}" target="_blank">{{ firstname }} {{ lastname }}</a>
+                {% else %}
+                {{ firstname }} {{ lastname }}
+                {% endif %}
+              </td>
+            </tr>
+            {% if customer_group %}
+            <tr>
+              <td><button data-toggle="tooltip" title="{{ text_customer_group }}" class="btn btn-primary"><i class="fa fa-group fa-fw"></i></button></td>
+              <td>{{ customer_group }}</td>
+            </tr>
+            {% endif %}
+            {% if ip %}
+            <tr>
+              <td><button data-toggle="tooltip" title="{{ text_ip }}" class="btn btn-primary"><i class="fa fa-desktop fa-fw"></i></button></td>
+              <td>{{ ip }}</td>
+            </tr>
+            {% endif %}
+            {% if user_agent %}
+            <tr>
+              <td><button data-toggle="tooltip" title="{{ text_user_agent }}" class="btn btn-primary"><i class="fa fa-chrome fa-fw"></i></button></td>
+              <td>{{ user_agent }}</td>
+            </tr>
+            {% endif %}
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-info-circle"></i> {{ text_fields }}</h3>
+      </div>
+      <div class="panel-body">
+        <table class="table table-bordered table-responsive">
+          <thead>
+            <tr>
+              <td style="width: 20%;" class="text-left">{{ text_field_name }}</td>
+              <td style="width: 80%;" class="text-left">{{ text_field_value }}</td>
+            </tr>
+          </thead>
+          <tbody>
+            {% for page_request_option in page_request_options %}
+            <tr>
+              <td class="text-left"><label>{{ page_request_option['name'] }}</label></td>
+              <td class="text-left">
+                {% if page_request_option['type'] != 'file' %}
+                {{ page_request_option['value'] }}                
+                {% else %}
+                <a href="{{ page_request_option['href'] }}">{{ page_request_option['value'] }}</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{{ footer }}

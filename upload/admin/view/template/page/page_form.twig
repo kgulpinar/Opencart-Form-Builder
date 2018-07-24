@@ -1,0 +1,1098 @@
+{{ header }}
+<style type="text/css">
+   .maintabs a {
+    padding: 20px !important;
+   }
+</style>
+{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-page" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i> {{ button_save }}</button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i> {{ button_cancel }} </a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %} 
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-page" class="form-horizontal">
+          <ul class="nav nav-tabs maintabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab"><i class="fa fa-language" aria-hidden="true"></i> {{ tab_general }}</a></li>
+            <li><a href="#tab-fields" data-toggle="tab"><i class="fa fa-plus-circle" aria-hidden="true"></i> {{ tab_fields }}</a></li>
+            <li><a href="#tab-data" data-toggle="tab"><i class="fa fa-cogs" aria-hidden="true"></i> {{ tab_page }}</a></li>
+            <li><a href="#tab-link" data-toggle="tab"><i class="fa fa-link" aria-hidden="true"></i> {{ tab_link }}</a></li>
+            <li><a href="#tab-email" data-toggle="tab"><i class="fa fa-bell" aria-hidden="true"></i> {{ tab_email }}</a></li>
+            <li><a href="#tab-success-page" data-toggle="tab"><i class="fa fa-location-arrow" aria-hidden="true"></i> {{ tab_success_page }}</a></li>
+            <li><a href="#tab-seo" data-toggle="tab"><i class="fa fa-search" aria-hidden="true"></i> {{ tab_seo }}</a></li>
+            <li><a href="#tab-css" data-toggle="tab"><i class="fa fa-pencil" aria-hidden="true"></i> {{ tab_css }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+               <ul class="nav nav-tabs" id="language">
+                {% for language in languages %}
+                <li><a href="#language{{ language.language_id }}" data-toggle="tab">
+                  <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                <div class="tab-pane" id="language{{ language.language_id }}">
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-title{{ language.language_id }}">{{ entry_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="page_form_description[{{ language.language_id }}][title]" value="{{ page_form_description[language.language_id] ? page_form_description[language.language_id].title : '' }}" placeholder="{{ entry_title }}" id="input-title{{ language.language_id }}" class="form-control" />
+                      {% if error_title[language.language_id] %}
+                      <div class="text-danger">{{ error_title[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-description{{ language.language_id }}">{{ entry_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="page_form_description[{{ language.language_id }}][description]" placeholder="{{ entry_description }}" id="input-description{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control ">{{ page_form_description[language.language_id] ? page_form_description[language.language_id].description : '' }}</textarea>
+                      {% if error_description[language.language_id] %}
+                      <div class="text-danger">{{ error_description[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-bottom-description{{ language.language_id }}">{{ entry_bottom_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="page_form_description[{{ language.language_id }}][bottom_description]" placeholder="{{ entry_bottom_description }}" id="input-bottom-description{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control ">{{ page_form_description[language.language_id] ? page_form_description[language.language_id].bottom_description : '' }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-meta-title{{ language.language_id }}">{{ entry_meta_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="page_form_description[{{ language.language_id }}][meta_title]" value="{{ page_form_description[language.language_id] ? page_form_description[language.language_id].meta_title : '' }}" placeholder="{{ entry_meta_title }}" id="input-meta-title{{ language.language_id }}" class="form-control" />
+                      {% if error_meta_title[language.language_id] %}
+                      <div class="text-danger">{{ error_meta_title[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-meta-description{{ language.language_id }}">{{ entry_meta_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="page_form_description[{{ language.language_id }}][meta_description]" rows="5" placeholder="{{ entry_meta_description }}" id="input-meta-description{{ language.language_id }}" class="form-control">{{ page_form_description[language.language_id] ? page_form_description[language.language_id].meta_description : '' }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-meta-keyword{{ language.language_id }}">{{ entry_meta_keyword }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="page_form_description[{{ language.language_id }}][meta_keyword]" rows="5" placeholder="{{ entry_meta_keyword }}" id="input-meta-keyword{{ language.language_id }}" class="form-control">{{ page_form_description[language.language_id] ? page_form_description[language.language_id].meta_keyword : '' }}</textarea>
+                    </div>
+                  </div>
+                  <fieldset>
+                    <legend>{{ text_form_attributes }}</legend>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" for="input-fieldset-title{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_fieldset_title }}">{{ entry_fieldset_title }}</span></label>
+                      <div class="col-sm-10">
+                        <input type="text" name="page_form_description[{{ language.language_id }}][fieldset_title]" value="{{ page_form_description[language.language_id] ? page_form_description[language.language_id].fieldset_title : '' }}" placeholder="{{ entry_fieldset_title }}" id="input-fieldset-title{{ language.language_id }}" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label class="col-sm-2 control-label" for="input-submit-button{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_submit_button }}">{{ entry_submit_button }}</span></label>
+                      <div class="col-sm-10">
+                        <input type="text" name="page_form_description[{{ language.language_id }}][submit_button]" value="{{ page_form_description[language.language_id] ? page_form_description[language.language_id].submit_button : '' }}" placeholder="{{ entry_submit_button }}" id="input-submit-button{{ language.language_id }}" class="form-control" />
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-data">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-top"><span data-toggle="tooltip" title="{{ help_top }}">{{ entry_top }}</span></label>
+                <div class="col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      {% if top %}
+                      <input type="checkbox" name="top" value="1" checked="checked" id="input-top" />
+                      {% else %}
+                      <input type="checkbox" name="top" value="1" id="input-top" />
+                      {% endif %}
+                      &nbsp; </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-bottom"><span data-toggle="tooltip" title="{{ help_bottom }}">{{ entry_bottom }}</span></label>
+                <div class="col-sm-10">
+                  <div class="checkbox">
+                    <label>
+                      {% if bottom %}
+                      <input type="checkbox" name="bottom" value="1" checked="checked" id="input-bottom" />
+                      {% else %}
+                      <input type="checkbox" name="bottom" value="1" id="input-bottom" />
+                      {% endif %}
+                      &nbsp; </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_captcha }}</label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    {% if captcha %}
+                    <input type="radio" name="captcha" value="1" checked="checked" />
+                    {{ text_yes }}
+                    {% else %}
+                    <input type="radio" name="captcha" value="1" />
+                    {{ text_yes }}
+                    {% endif %}
+                  </label>
+                  <label class="radio-inline">
+                    {% if not captcha %}
+                    <input type="radio" name="captcha" value="0" checked="checked" />
+                    {{ text_no }}
+                    {% else %}
+                    <input type="radio" name="captcha" value="0" />
+                    {{ text_no }}
+                    {% endif %}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-sort-order">{{ entry_sort_order }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="sort_order" value="{{ sort_order }}" placeholder="{{ entry_sort_order }}" id="input-sort-order" class="form-control" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                <div class="col-sm-10">
+                  <select name="status" id="input-status" class="form-control">
+                    {% if status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-link">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_show_guest }}</label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    {% if show_guest %}
+                    <input type="radio" name="show_guest" value="1" checked="checked" />
+                    {{ text_yes }}
+                    {% else %}
+                    <input type="radio" name="show_guest" value="1" />
+                    {{ text_yes }}
+                    {% endif %}
+                  </label>
+                  <label class="radio-inline">
+                    {% if not show_guest %}
+                    <input type="radio" name="show_guest" value="0" checked="checked" />
+                    {{ text_no }}
+                    {% else %}
+                    <input type="radio" name="show_guest" value="0" />
+                    {{ text_no }}
+                    {% endif %}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_customer_group }}</label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for customer_group in customer_groups %}
+                    <div class="checkbox">
+                      <label>
+                        {% if customer_group.customer_group_id in page_form_customer_group %}
+                        <input type="checkbox" name="page_form_customer_group[]" value="{{ customer_group.customer_group_id }}" checked="checked" />
+                        {{ customer_group.name }}
+                        {% else %}
+                        <input type="checkbox" name="page_form_customer_group[]" value="{{ customer_group.customer_group_id }}" />
+                        {{ customer_group.name }}
+                        {% endif %}
+                      </label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_store }}</label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for store in stores %}
+                    <div class="checkbox">
+                      <label>
+                        {% if store.store_id in page_form_store %}
+                        <input type="checkbox" name="page_form_store[]" value="{{ store.store_id }}" checked="checked" />
+                        {{ store.name }}
+                        {% else %}
+                        <input type="checkbox" name="page_form_store[]" value="{{ store.store_id }}" />
+                        {{ store.name }}
+                        {% endif %}
+                      </label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_information }}</label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for information in informations %}
+                    <div class="checkbox">
+                      <label>
+                        {% if information.information_id in page_form_information %}
+                        <input type="checkbox" name="page_form_information[]" value="{{ information.information_id }}" checked="checked" />
+                        {{ information.title }}
+                        {% else %}
+                        <input type="checkbox" name="page_form_information[]" value="{{ information.information_id }}" />
+                        {{ information.title }}
+                        {% endif %}
+                      </label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-fields">
+              <div class="row">
+                <div class="col-sm-4 col-xs-12 col-md-3">
+                  <ul class="nav nav-pills nav-stacked" id="pageformfields">
+                  {% set field_row = 0 %}
+                    {% for field in fields %}
+                    {% set counter = field_row + 1 %}
+                    <li class="pageformfields-li"><a href="#tab-field{{ field_row }}" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('a[href=\'#tab-field{{ field_row }}\']').parent().remove(); $('#tab-field{{ field_row }}').remove(); $('#pageformfields a:first').tab('show');"></i> {{ field.description[config_language_id].field_name ? field.description[config_language_id].field_name : tab_field ~ '-' ~ counter }} <i class="fa fa-arrows pull-right" aria-hidden="true"></i></a></li>
+                    {% set field_row = field_row + 1 %}
+                    {% endfor %}
+                  </ul>
+                  <ul class="nav nav-pills nav-stacked adfieldbutton">
+                    <li><button type="button" class="btn btn-default btn-block" onclick="addField();"><i class="fa fa-plus-circle" aria-hidden="true"></i> {{ button_add_field }}</button></li>
+                  </ul>
+                </div>
+                <div class="col-sm-8 col-xs-12 col-md-5">
+                  <div class="tab-content" id="tab-content">
+                  {% set field_row = 0 %}
+                  {% set page_form_option_value_row = 0 %}
+                    {% for field in fields %}
+                    <div class="tab-pane" id="tab-field{{ field_row }}">
+                      <fieldset>
+                        <legend>{{ text_lang_setting }}</legend>
+                        <input type="hidden" name="page_form_field[{{ field_row }}][page_form_option_id]" value="{{ field.page_form_option_id ? field.page_form_option_id : '' }}" />
+                        <div class="field-group">
+                          <ul class="nav nav-tabs" id="field-language{{ field_row }}">
+                            {% for language in languages %}
+                            <li><a href="#field-language{{ field_row }}-{{ language.language_id }}" data-toggle="tab"> <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                            {% endfor %}
+                          </ul>
+                          <div class="tab-content">
+                            {% for language in languages %}
+                            <div class="tab-pane" id="field-language{{ field_row }}-{{ language.language_id }}">
+                              <div class="form-group required">
+                                <label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_field_name }}">{{ entry_field_name }}</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" name="page_form_field[{{ field_row }}][description][{{ language.language_id }}][field_name]" value="{{ field.description[language.language_id].field_name ? field.description[language.language_id].field_name : '' }}" placeholder="{{ entry_field_name }}" class="form-control" />
+                                  {% if error_field_name[field_row][language.language_id] %}
+                                  <div class="text-danger">{{ error_field_name[field_row][language.language_id] }}</div>
+                                  {% endif %}
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_field_help }}">{{ entry_field_help }}</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" name="page_form_field[{{ field_row }}][description][{{ language.language_id }}][field_help]" value="{{ field.description[language.language_id].field_help ? field.description[language.language_id].field_help : '' }}" placeholder="{{ entry_field_help }}" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="form-group field-placeholder{{ field_row }}">
+                                <label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_field_placeholder }}">{{ entry_field_placeholder }}</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" name="page_form_field[{{ field_row }}][description][{{ language.language_id }}][field_placeholder]" value="{{ field.description[language.language_id].field_placeholder ? field.description[language.language_id].field_placeholder : '' }}" placeholder="{{ entry_field_placeholder }}" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="form-group field-error{{ field_row }}">
+                                <label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_field_error }}">{{ entry_field_error }}</span></label>
+                                <div class="col-sm-12">
+                                  <input type="text" name="page_form_field[{{ field_row }}][description][{{ language.language_id }}][field_error]" value="{{ field.description[language.language_id].field_error ? field.description[language.language_id].field_error : '' }}" placeholder="{{ entry_field_error }}" class="form-control" />
+                                </div>
+                              </div>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                      </fieldset>
+                      <fieldset>
+                        <legend>{{ text_type_setting }}</legend>
+                        <div class="form-group">
+                          <label class="col-sm-12 control-label">{{ entry_status }}</label>
+                          <div class="col-sm-12">
+                            <select name="page_form_field[{{ field_row }}][status]" class="form-control field-status" rel="{{ field_row }}">
+                              {% if field.status %}
+                              <option value="1" selected="selected">{{ text_enabled }}</option>
+                              <option value="0">{{ text_disabled }}</option>
+                              {% else %}
+                              <option value="1">{{ text_enabled }}</option>
+                              <option value="0" selected="selected">{{ text_disabled }}</option>
+                              {% endif %}
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_required }}">{{ entry_required }}</span></label>
+                          <div class="col-sm-12">
+                            <select name="page_form_field[{{ field_row }}][required]" class="form-control field-required" rel="{{ field_row }}">
+                              {% if field.required %}
+                              <option value="1" selected="selected">{{ text_yes }}</option>
+                              <option value="0">{{ text_no }}</option>
+                              {% else %}
+                              <option value="1">{{ text_yes }}</option>
+                              <option value="0" selected="selected">{{ text_no }}</option>
+                              {% endif %}
+                            </select>
+                          </div>
+                        </div>
+                        <div class="form-group hide">
+                          <label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_sort_order }}">{{ entry_sort_order }}</span></label>
+                          <div class="col-sm-12">
+                            <input type="text" name="page_form_field[{{ field_row }}][sort_order]"  value="{{ field.sort_order }}" class="form-control field-sortorder" />
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_type }}">{{ entry_type }}</span></label>
+                          <div class="col-sm-12">
+                            <select name="page_form_field[{{ field_row }}][type]" class="form-control field-type" rel="{{ field_row }}">
+                              <optgroup label="{{ text_choose }}">
+                              {% if field.type == 'select' %}
+                              <option value="select" selected="selected">{{ text_select }}</option>
+                              {% else %}
+                              <option value="select">{{ text_select }}</option>
+                              {% endif %}
+                              {% if field.type == 'radio' %}
+                              <option value="radio" selected="selected">{{ text_radio }}</option>
+                              {% else %}
+                              <option value="radio">{{ text_radio }}</option>
+                              {% endif %}
+                              {% if field.type == 'checkbox' %}
+                              <option value="checkbox" selected="selected">{{ text_checkbox }}</option>
+                              {% else %}
+                              <option value="checkbox">{{ text_checkbox }}</option>
+                              {% endif %}
+                              </optgroup>
+                              <optgroup label="{{ text_input }}">
+                              {% if field.type == 'text' %}
+                              <option value="text" selected="selected">{{ text_text }}</option>
+                              {% else %}
+                              <option value="text">{{ text_text }}</option>
+                              {% endif %}
+                              {% if field.type == 'textarea' %}
+                              <option value="textarea" selected="selected">{{ text_textarea }}</option>
+                              {% else %}
+                              <option value="textarea">{{ text_textarea }}</option>
+                              {% endif %}
+                              {% if field.type == 'number' %}
+                              <option value="number" selected="selected">{{ text_number }}</option>
+                              {% else %}
+                              <option value="number">{{ text_number }}</option>
+                              {% endif %}
+                              {% if field.type == 'telephone' %}
+                              <option value="telephone" selected="selected">{{ text_telephone }}</option>
+                              {% else %}
+                              <option value="telephone">{{ text_telephone }}</option>
+                              {% endif %}
+                              {% if field.type == 'email' %}
+                              <option value="email" selected="selected">{{ text_email }}</option>
+                              {% else %}
+                              <option value="email">{{ text_email }}</option>
+                              {% endif %}
+                              {% if field.type == 'email_exists' %}
+                              <option value="email_exists" selected="selected">{{ text_email_exists }}</option>
+                              {% else %}
+                              <option value="email_exists">{{ text_email_exists }}</option>
+                              {% endif %}
+                              {% if field.type == 'password' %}
+                              <option value="password" selected="selected">{{ text_password }}</option>
+                              {% else %}
+                              <option value="password">{{ text_password }}</option>
+                              {% endif %}
+                              {% if field.type == 'confirm_password' %}
+                              <option value="confirm_password" selected="selected">{{ text_confirm_password }}</option>
+                              {% else %}
+                              <option value="confirm_password">{{ text_confirm_password }}</option>
+                              {% endif %}
+                              </optgroup>
+                              <optgroup label="{{ text_file }}">
+                              {% if field.type == 'file' %}
+                              <option value="file" selected="selected">{{ text_file }}</option>
+                              {% else %}
+                              <option value="file">{{ text_file }}</option>
+                              {% endif %}
+                              </optgroup>
+                              <optgroup label="{{ text_date }}">
+                              {% if field.type == 'date' %}
+                              <option value="date" selected="selected">{{ text_date }}</option>
+                              {% else %}
+                              <option value="date">{{ text_date }}</option>
+                              {% endif %}
+                              {% if field.type == 'time' %}
+                              <option value="time" selected="selected">{{ text_time }}</option>
+                              {% else %}
+                              <option value="time">{{ text_time }}</option>
+                              {% endif %}
+                              {% if field.type == 'datetime' %}
+                              <option value="datetime" selected="selected">{{ text_datetime }}</option>
+                              {% else %}
+                              <option value="datetime">{{ text_datetime }}</option>
+                              {% endif %}
+                              </optgroup>
+                              <optgroup label="{{ text_localisation }}">
+                              {% if field.type == 'country' %}
+                              <option value="country" selected="selected">{{ text_country }}</option>
+                              {% else %}
+                              <option value="country">{{ text_country }}</option>
+                              {% endif %}
+                              {% if field.type == 'zone' %}
+                              <option value="zone" selected="selected">{{ text_zone }}</option>
+                              {% else %}
+                              <option value="zone">{{ text_zone }}</option>
+                              {% endif %}
+                              {% if field.type == 'postcode' %}
+                              <option value="postcode" selected="selected">{{ text_postcode }}</option>
+                              {% else %}
+                              <option value="postcode">{{ text_postcode }}</option>
+                              {% endif %}
+                              {% if field.type == 'address' %}
+                              <option value="address" selected="selected">{{ text_address }}</option>
+                              {% else %}
+                              <option value="address">{{ text_address }}</option>
+                              {% endif %}
+                              </optgroup>
+                            </select>
+                          </div>
+                        </div>
+                      </fieldset>
+                      <fieldset id="field-values{{ field_row }}">
+                        <legend>{{ text_value_setting }}</legend>
+                        <table id="pageformoption-value{{ field_row }}" class="table table-striped table-bordered table-hover">
+                          <thead>
+                            <tr>
+                              <td class="text-left required">{{ entry_option_value }}</td>
+                              <td class="text-right">{{ entry_sort_order }}</td>
+                              <td class="text-right">{{ entry_action }}</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% if field.option_value %}
+                            {% for page_form_option_value in field.option_value %}
+                            <tr id="pageformoption-value-row{{ field_row }}-{{ page_form_option_value_row }}">
+                              <td class="text-left">
+                                <input type="hidden" name="page_form_field[{{ field_row }}][option_value][{{ page_form_option_value_row }}][page_form_option_value_id]" value="{{ page_form_option_value.page_form_option_value_id }}" />
+                                {% for language in languages %}
+                                <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> </span>
+                                  <input type="text" name="page_form_field[{{ field_row }}][option_value][{{ page_form_option_value_row }}][page_form_option_value_description][{{ language.language_id }}][name]" value="{{ page_form_option_value.page_form_option_value_description[language.language_id].name ? page_form_option_value.page_form_option_value_description[language.language_id].name : '' }}" placeholder="{{ entry_option_value }}" class="form-control" />
+                                  {% if error_value_name[field_row][page_form_option_value_row][language.language_id] %}
+                                  <div class="text-danger">{{ error_value_name[field_row][page_form_option_value_row][language.language_id] }}</div>
+                                  {% endif %}
+                                </div>
+                                {% endfor %}
+                              </td>
+                              <td class="text-right"><input type="text" name="page_form_field[{{ field_row }}][option_value][{{ page_form_option_value_row }}][sort_order]" value="{{ page_form_option_value.sort_order }}" class="form-control" /></td>
+                              <td class="text-right"><button type="button" onclick="$('#pageformoption-value-row{{ field_row }}-{{ page_form_option_value_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                            </tr>
+                            {% set page_form_option_value_row = page_form_option_value_row + 1 %}
+                            {% endfor %}
+                            {% endif %}
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                              <td colspan="2"></td>
+                              <td class="text-right"><button type="button" onclick="addPageFormOptionValue('{{ field_row }}');" data-toggle="tooltip" title="{{ button_option_value_add }}" class="btn  btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      </fieldset>
+                    </div>
+                    {% set field_row = field_row + 1 %}
+                  {% endfor %}
+                  </div>
+                </div>
+                <div class="col-sm-12 col-xs-12 col-md-4">
+                  <table class="table table-bordered table-responsive">
+                    <thead><tr><td>{{ valid_field_type }}</td><td>{{ valid_field_info }}</td></tr></thead>
+                    <thead><tr><td class="text-center" colspan="2">{{ valid_select_type }}</td></tr></thead>
+                    <tbody>
+                      <tr><td>{{ text_select }}</td><td>{{ text_select_value }}</td></tr>
+                      <tr><td>{{ text_radio }}</td><td>{{ text_radio_value }}</td></tr>
+                      <tr><td>{{ text_checkbox }}</td><td>{{ text_checkbox_value }}</td></tr>
+                    </tbody>
+                    <thead><tr><td class="text-center" colspan="2">{{ valid_input_type }}</td></tr></thead>
+                    <tbody>
+                      <tr><td>{{ text_text }}</td><td>{{ text_text_value }}</td></tr>
+                      <tr><td>{{ text_textarea }}</td><td>{{ text_textarea_value }}</td></tr>
+                      <tr><td>{{ text_number }}</td><td>{{ text_number_value }}</td></tr>
+                      <tr><td>{{ text_telephone }}</td><td>{{ text_telephone_value }}</td></tr>
+                      <tr><td>{{ text_email }}</td><td>{{ text_email_value }}</td></tr>
+                      <tr><td>{{ text_email_exists }}</td><td>{{ text_email_exists_value }}</td></tr>
+                      <tr><td>{{ text_password }}</td><td>{{ text_password_value }}</td></tr>
+                      <tr><td>{{ text_confirm_password }}</td><td>{{ text_confirm_value }}</td></tr>
+                    </tbody>
+                    <thead><tr><td class="text-center" colspan="2">{{ valid_file_type }}</td></tr></thead>
+                    <tbody>
+                      <tr><td>{{ text_file }}</td><td>{{ text_file_value }}</td></tr>
+                    </tbody>
+                    <thead><tr><td class="text-center" colspan="2">{{ valid_date_type }}</td></tr></thead>
+                    <tbody>
+                      <tr><td>{{ text_date }}</td><td>{{ text_date_value }}</td></tr>
+                      <tr><td>{{ text_time }}</td><td>{{ text_time_value }}</td></tr>
+                      <tr><td>{{ text_datetime }}</td><td>{{ text_datetime_value }}</td></tr>
+                    </tbody>
+                    <thead><tr><td class="text-center" colspan="2">{{ valid_localisation_type }}</td></tr></thead>
+                    <tbody>
+                      <tr><td>{{ text_country }}</td><td>{{ text_country_value }}</td></tr>
+                      <tr><td>{{ text_zone }}</td><td>{{ text_zone_value }}</td></tr>
+                      <tr><td>{{ text_postcode }}</td><td>{{ text_postcode_value }}</td></tr>
+                      <tr><td>{{ text_address }}</td><td>{{ text_address_value }}</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-email">
+              <ul class="nav nav-tabs" id="email">
+                <li class="active"><a href="#tab-customer" data-toggle="tab"><i class="fa fa-users" aria-hidden="true"></i> {{ tab_customer_email }}</a></li>
+                <li><a href="#tab-admin" data-toggle="tab"><i class="fa fa-envelope" aria-hidden="true"></i> {{ tab_admin_email }}</a></li>
+              </ul>
+              <div class="tab-content col-sm-9">
+                <div class="tab-pane active" id="tab-customer">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_customer_email_status }}">{{ entry_customer_email_status }}</span></label>
+                    <div class="col-sm-10">
+                      <label class="radio-inline">
+                        {% if customer_email_status %}
+                        <input type="radio" name="customer_email_status" value="1" checked="checked" />
+                        {{ text_yes }}
+                        {% else %}
+                        <input type="radio" name="customer_email_status" value="1" />
+                        {{ text_yes }}
+                        {% endif %}
+                      </label>
+                      <label class="radio-inline">
+                        {% if not customer_email_status %}
+                        <input type="radio" name="customer_email_status" value="0" checked="checked" />
+                        {{ text_no }}
+                        {% else %}
+                        <input type="radio" name="customer_email_status" value="0" />
+                        {{ text_no }}
+                        {% endif %}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="customeremaillanguage-group">
+                    <ul class="nav nav-tabs" id="customer-email-language">
+                      {% for language in languages %}
+                      <li><a href="#customer-email-language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                      {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                      {% for language in languages %}
+                      <div class="tab-pane" id="customer-email-language{{ language.language_id }}">
+                        <div class="form-group required">
+                          <label class="col-sm-2 control-label" for="input-customer-subject{{ language.language_id }}">{{ entry_customer_subject }}</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="page_form_description[{{ language.language_id }}][customer_subject]" value="{{ page_form_description[language.language_id] ? page_form_description[language.language_id].customer_subject : '' }}" placeholder="{{ entry_customer_subject }}" id="input-customer-subject{{ language.language_id }}" class="form-control" />
+                            {% if error_customer_subject[language.language_id] %}
+                            <div class="text-danger">{{ error_customer_subject[language.language_id] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="form-group required">
+                          <label class="col-sm-2 control-label" for="input-customer-message{{ language.language_id }}">{{ entry_customer_message }}</label>
+                          <div class="col-sm-10">
+                            <textarea name="page_form_description[{{ language.language_id }}][customer_message]" placeholder="{{ entry_customer_message }}" id="input-customer-message{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control ">{{ page_form_description[language.language_id] ? page_form_description[language.language_id].customer_message : '' }}</textarea>
+                            {% if error_customer_message[language.language_id] %}
+                            <div class="text-danger">{{ error_customer_message[language.language_id] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="tab-admin">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label">{{ entry_admin_email_status }}</label>
+                    <div class="col-sm-10">
+                      <label class="radio-inline">
+                        {% if admin_email_status %}
+                        <input type="radio" name="admin_email_status" value="1" checked="checked" />
+                        {{ text_yes }}
+                        {% else %}
+                        <input type="radio" name="admin_email_status" value="1" />
+                        {{ text_yes }}
+                        {% endif %}
+                      </label>
+                      <label class="radio-inline">
+                        {% if not admin_email_status %}
+                        <input type="radio" name="admin_email_status" value="0" checked="checked" />
+                        {{ text_no }}
+                        {% else %}
+                        <input type="radio" name="admin_email_status" value="0" />
+                        {{ text_no }}
+                        {% endif %}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="adminemaillanguage-group">
+                    <div class="form-group required">
+                      <label class="col-sm-2 control-label">{{ entry_admin_email }}</label>
+                      <div class="col-sm-10">
+                        <input type="text" name="admin_email" value="{{ admin_email }}" class="form-control">
+                        <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ alert_admin_email }}</div>
+                        {% if error_admin_email %}
+                        <div class="text-danger">{{ error_admin_email }}</div>
+                        {% endif %}
+                      </div>
+                    </div>
+                    <ul class="nav nav-tabs" id="admin-email-language">
+                      {% for language in languages %}
+                      <li><a href="#admin-email-language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                      {% endfor %}
+                    </ul>
+                    <div class="tab-content">
+                      {% for language in languages %}
+                      <div class="tab-pane" id="admin-email-language{{ language.language_id }}">
+                        <div class="form-group required">
+                          <label class="col-sm-2 control-label" for="input-admin-subject{{ language.language_id }}">{{ entry_admin_subject }}</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="page_form_description[{{ language.language_id }}][admin_subject]" value="{{ page_form_description[language.language_id] ? page_form_description[language.language_id].admin_subject : '' }}" placeholder="{{ entry_admin_subject }}" id="input-admin-subject{{ language.language_id }}" class="form-control" />
+                            {% if error_admin_subject[language.language_id] %}
+                            <div class="text-danger">{{ error_admin_subject[language.language_id] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="form-group required">
+                          <label class="col-sm-2 control-label" for="input-admin-message{{ language.language_id }}">{{ entry_admin_message }}</label>
+                          <div class="col-sm-10">
+                            <textarea name="page_form_description[{{ language.language_id }}][admin_message]" placeholder="{{ entry_admin_message }}" id="input-admin-message{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control ">{{ page_form_description[language.language_id] ? page_form_description[language.language_id].admin_message : '' }}</textarea>
+                            {% if error_admin_message[language.language_id] %}
+                            <div class="text-danger">{{ error_admin_message[language.language_id] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-3">
+                <br/>
+                <table class="table table-bordered">
+                  <thead>
+                    <tr><td>{{ const_names }}</td><td>{{ const_short_codes }}</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{ const_logo }}</td><td>{LOGO}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ const_store_name }}</td><td>{STORE_NAME}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ const_store_link }}</td><td>{STORE_LINK}</td>
+                    </tr>
+                    <tr>
+                      <td>{{ const_name }}</td><td>{INFORMATION}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-seo">
+              <div class="alert alert-info"><i class="fa fa-info-circle"></i> {{ text_keyword }}</div>
+              <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <td class="text-left">{{ entry_store }}</td>
+                      <td class="text-left">{{ entry_keyword }}</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for store in stores %}
+                    <tr>
+                      <td class="text-left">{{ store.name }}</td>
+                      <td class="text-left">
+                      {% for language in languages %}
+                        <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                          <input type="text" name="page_form_seo_url[{{ store.store_id }}][{{ language.language_id }}]" value="{{ page_form_seo_url[store.store_id][language.language_id] ? page_form_seo_url[store.store_id][language.language_id] : '' }}" placeholder="{{ entry_keyword }} " class="form-control" />
+                        </div>
+                         {% if error_keyword[store.store_id][language.language_id] %}
+                          <div class="text-danger">{{ error_keyword[store.store_id][language.language_id] }}</div>
+                        {% endif %}
+                        {% endfor %}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-success-page">
+              <ul class="nav nav-tabs" id="success-language">
+                {% for language in languages %}
+                <li><a href="#success-language{{ language.language_id }}" data-toggle="tab"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />  {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                <div class="tab-pane" id="success-language{{ language.language_id }}">
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-success-title{{ language.language_id }}">{{ entry_success_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="page_form_description[{{ language.language_id }}][success_title]" value="{{ page_form_description[language.language_id] ? page_form_description[language.language_id].success_title : '' }}" placeholder="{{ entry_success_title }}" id="input-success-title{{ language.language_id }}" class="form-control" />
+                      {% if error_success_title[language.language_id] %}
+                      <div class="text-danger">{{ error_success_title[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-success-description{{ language.language_id }}">{{ entry_success_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="page_form_description[{{ language.language_id }}][success_description]" placeholder="{{ entry_success_description }}" id="input-success-description{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control ">{{ page_form_description[language.language_id] ? page_form_description[language.language_id].success_description : '' }}</textarea>
+                      {% if error_success_description[language.language_id] %}
+                      <div class="text-danger">{{ error_success_description[language.language_id] }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>                
+                {% endfor %}
+              </div>
+            </div>            
+            <div class="tab-pane" id="tab-css">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ tab_css }}</label>
+                <div class="col-sm-10">
+                  <textarea style="height: 250px;" name="css" class="form-control">{{ css }}</textarea>
+                </div>
+              </div>           
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+  <link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script> 
+  <script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script> 
+  <script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script> 
+  <script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+  <link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script> 
+  <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script> 
+
+  <script type="text/javascript"><!--
+  $('#language a:first').tab('show');
+  $('#customer-email-language a:first').tab('show');
+  $('#admin-email-language a:first').tab('show');
+  $('#success-language a:first').tab('show');
+
+  $('#email a:first').tab('show');
+
+  $('#pageformfields li:first-child a').tab('show');
+  {% for key, field in fields %}
+  $('#field-language{{ key }} li:first-child a').tab('show');
+  {% endfor %}
+  //--></script>
+  <script type="text/javascript"><!--
+  $('input[name=\'admin_email_status\']').click(function() {
+    if($('input[name=\'admin_email_status\']:checked').val() == 1) {
+      $('.adminemaillanguage-group').slideDown(300);
+    }else{
+      $('.adminemaillanguage-group').slideUp(300);
+    }
+  });
+  $('input[name=\'admin_email_status\']:checked').trigger('click');
+
+  $('input[name=\'customer_email_status\']').click(function() {
+    if($('input[name=\'customer_email_status\']:checked').val() == 1) {
+      $('.customeremaillanguage-group').slideDown(300);
+    }else{
+      $('.customeremaillanguage-group').slideUp(300);
+    }
+  });
+  $('input[name=\'customer_email_status\']:checked').trigger('click');
+  //--></script>
+ 
+<script type="text/javascript"><!--
+$('#pageformfields a:first').tab('show');
+
+var field_row = {{ field_row }};
+
+function addField() {
+  html = '<div class="tab-pane" id="tab-field' + field_row + '">';
+    html += '<fieldset>';
+      html += '<legend>{{ text_lang_setting }}</legend>';
+      html += '<input type="hidden" name="page_form_field[' + field_row + '][page_form_option_id]" value="" />';
+      html += '<div class="field-group">';
+        html += '<ul class="nav nav-tabs" id="field-language' + field_row + '">';
+          {% for language in languages %}
+          html += '<li><a href="#field-language' + field_row + '-{{ language.language_id }}" data-toggle="tab">';
+          html += '<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />';
+         html += ' {{ language.name }}</a></li>';
+          {% endfor %}
+        html += '</ul>';
+        html += '<div class="tab-content">';
+          {% for language in languages %}
+          html += '<div class="tab-pane" id="field-language' + field_row + '-{{ language.language_id }}">';
+            html += '<div class="form-group required">';
+              html += '<label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_field_name }}">{{ entry_field_name }}</span></label>';
+              html += '<div class="col-sm-12">';
+                html += '<input type="text" name="page_form_field[' + field_row + '][description][{{ language.language_id }}][field_name]" value="" placeholder="{{ entry_field_name }}" class="form-control" />';
+              html += '</div>';
+            html += '</div>';
+            html += '<div class="form-group">';
+              html += '<label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_field_name }}">{{ entry_field_help }}</span></label>';
+              html += '<div class="col-sm-12">';
+                html += '<input type="text" name="page_form_field[' + field_row + '][description][{{ language.language_id }}][field_help]" value="" placeholder="{{ entry_field_help }}" class="form-control" />';
+              html += '</div>';
+            html += '</div>';
+            html += '<div class="form-group field-placeholder' + field_row + '">';
+              html += '<label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_field_placeholder }}">{{ entry_field_placeholder }}</span></label>';
+              html += '<div class="col-sm-12">';
+                html += '<input type="text" name="page_form_field[' + field_row + '][description][{{ language.language_id }}][field_placeholder]" value="" placeholder="{{ entry_field_placeholder }}" class="form-control" />';
+              html += '</div>';
+            html += '</div>';
+            html += '<div class="form-group field-error' + field_row + '">';
+              html += '<label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_field_error }}">{{ entry_field_error }}</span></label>';
+              html += '<div class="col-sm-12">';
+                html += '<input type="text" name="page_form_field[' + field_row + '][description][{{ language.language_id }}][field_error]" value="" placeholder="{{ entry_field_error }}" class="form-control" />';
+              html += '</div>';
+            html += '</div>';
+          html += '</div>';
+          {% endfor %}
+        html += '</div>';
+      html += '</div>';
+    html += '</fieldset>';
+    html += '<fieldset>';
+      html += '<legend>{{ text_type_setting }}</legend>';
+          html += '<div class="form-group">';
+            html += '<label class="col-sm-12 control-label">{{ entry_status }}</label>';
+            html += '<div class="col-sm-12">';
+              html += '<select name="page_form_field[' + field_row + '][status]" class="form-control field-status" rel="' + field_row + '">';
+                html += '<option value="1" selected="selected">{{ text_enabled }}</option>';
+                html += '<option value="0">{{ text_disabled }}</option>';
+              html += '</select>';
+            html += '</div>';
+          html += '</div>';
+          html += '<div class="form-group">';
+            html += '<label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_required }}">{{ entry_required }}</span></label>';
+            html += '<div class="col-sm-12">';
+              html += '<select name="page_form_field[' + field_row + '][required]" class="form-control field-required" rel="' + field_row + '">';
+                html += '<option value="1" selected="selected">{{ text_yes }}</option>';
+                html += '<option value="0">{{ text_no }}</option>';
+              html += '</select>';
+            html += '</div>';
+          html += '</div>';
+          html += '<div class="form-group hide">';
+            html += '<label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_sort_order }}">{{ entry_sort_order }}</span></label>';
+            html += '<div class="col-sm-12">';
+              html += '<input type="text" name="page_form_field[' + field_row + '][sort_order]"  value="' + (field_row + parseInt(1)) + '" class="form-control field-sortorder" />';
+            html += '</div>';
+          html += '</div>';
+          html += '<div class="form-group">';
+            html += '<label class="col-sm-12 control-label"><span data-toggle="tooltip" title="{{ help_type }}">{{ entry_type }}</span></label>';
+            html += '<div class="col-sm-12">';
+              html += '<select name="page_form_field[' + field_row + '][type]" class="form-control field-type" rel="' + field_row + '">';
+                html += '<optgroup label="{{ text_choose }}">';
+                html += '<option value="select">{{ text_select }}</option>';
+                html += '<option value="radio">{{ text_radio }}</option>';
+                html += '<option value="checkbox">{{ text_checkbox }}</option>';
+                html += '</optgroup>';
+                html += '<optgroup label="{{ text_input }}">';
+                html += '<option value="text" selected="selected">{{ text_text }}</option>';
+                html += '<option value="textarea">{{ text_textarea }}</option>';
+                html += '<option value="number">{{ text_number }}</option>';
+                html += '<option value="telephone">{{ text_telephone }}</option>';
+                html += '<option value="email">{{ text_email }}</option>';
+                html += '<option value="email_exists">{{ text_email_exists }}</option>';
+                html += '<option value="password">{{ text_password }}</option>';
+                html += '<option value="confirm_password">{{ text_confirm_password }}</option>';
+                html += '</optgroup>';
+                html += '<optgroup label="{{ text_file }}">';
+                html += '<option value="file">{{ text_file }}</option>';
+                html += '</optgroup>';
+                html += '<optgroup label="{{ text_date }}">';
+                html += '<option value="date">{{ text_date }}</option>';
+                html += '<option value="time">{{ text_time }}</option>';
+                html += '<option value="datetime">{{ text_datetime }}</option>';
+                html += '</optgroup>';
+                html += '<optgroup label="{{ text_localisation }}">';
+                html += '<option value="country">{{ text_country }}</option>';
+                html += '<option value="zone">{{ text_zone }}</option>';
+                html += '<option value="postcode">{{ text_postcode }}</option>';
+                html += '<option value="address">{{ text_address }}</option>';
+                html += '</optgroup>';
+              html += '</select>';
+            html += '</div>';
+          html += '</div>';
+    html += '</fieldset>';
+    html += '<fieldset id="field-values' + field_row + '">';
+      html += '<legend>{{ text_value_setting }}</legend>';
+        html += '<table id="pageformoption-value' + field_row + '" class="table table-striped table-bordered table-hover">';
+          html += '<thead>';
+            html += '<tr>';
+              html += '<td class="text-left required">{{ entry_option_value }}</td>';
+              html += '<td class="text-right">{{ entry_sort_order }}</td>';
+              html += '<td class="text-right">{{ entry_action }}</td>';
+            html += '</tr>';
+          html += '</thead>';
+          html += '<tbody>';
+          html += '</tbody>';
+          html += '<tfoot>';
+            html += '<tr>';
+              html += '<td colspan="2"></td>';
+              html += '<td class="text-right"><button type="button" onclick="addPageFormOptionValue(' + field_row + ');" data-toggle="tooltip" title="{{ button_option_value_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>';
+            html += '</tr>';
+          html += '</tfoot>';
+        html += '</table>';
+    html += '</fieldset>';
+  html += '</div>';
+
+  $('#tab-fields #tab-content').append(html);
+
+  $('#pageformfields').append('<li class="pageformfields-li"><a href="#tab-field' + field_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick=" $(\'#pageformfields a:first\').tab(\'show\');$(\'a[href=\\\'#tab-field' + field_row + '\\\']\').parent().remove(); $(\'#tab-field' + field_row + '\').remove();"></i> {{ tab_field }}-'+ (field_row + parseInt(1))  +' <i class="fa fa-arrows pull-right" aria-hidden="true"></i></a></li>');
+
+  $('#pageformfields a[href=\'#tab-field' + field_row + '\']').tab('show');
+  
+  $('#field-language'+ field_row +' a:first').tab('show');
+
+  $('[data-toggle=\'tooltip\']').tooltip({
+    container: 'body',
+    html: true
+  });
+
+  $('select[name=\'page_form_field[' + field_row + '][required]\'].field-required').trigger('change');
+  $('select[name=\'page_form_field[' + field_row + '][type]\'].field-type').trigger('change');
+
+  field_row++;
+}
+//--></script>
+<script type="text/javascript"><!--
+$('select[name=\'type\']').on('change', function() {
+  if (this.value == 'select' || this.value == 'radio' || this.value == 'checkbox') {
+    $('#pageoption-value').show();
+  } else {
+    $('#pageoption-value').hide();
+  }
+});
+
+$('select[name=\'type\']').trigger('change');
+
+var page_form_option_value_row = '{{ page_form_option_value_row ? page_form_option_value_row : 0 }}';
+
+function addPageFormOptionValue(field_row) {
+  html  = '<tr id="pageformoption-value-row' + field_row + '-' + page_form_option_value_row + '">'; 
+    html += '  <td class="text-left"><input type="hidden" name="page_form_field[' + field_row + '][option_value][' + page_form_option_value_row + '][page_form_option_value_id]" value="" />';
+  {% for language in languages %}
+  html += '    <div class="input-group">';
+  html += '      <span class="input-group-addon">';
+  html += '<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" />';
+  html += '</span><input type="text" name="page_form_field[' + field_row + '][option_value][' + page_form_option_value_row + '][page_form_option_value_description][{{ language.language_id }}][name]" value="" placeholder="{{ entry_option_value }}" class="form-control" />';
+    html += '    </div>';
+  {% endfor %}
+  html += '  </td>';
+  html += '  <td class="text-right"><input type="text" name="page_form_field[' + field_row + '][option_value][' + page_form_option_value_row + '][sort_order]" value="" placeholder="{{ entry_sort_order }}" class="form-control" /></td>';
+  html += '  <td class="text-right"><button type="button" onclick="$(\'#pageformoption-value-row' + field_row + '-' + page_form_option_value_row + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+  html += '</tr>';  
+  
+  $('#pageformoption-value' + field_row + ' tbody').append(html);
+  
+  page_form_option_value_row++;
+}
+//--></script>
+<script type="text/javascript"><!--
+$(document).delegate('.field-type', 'change', function() {
+  var rel = $(this).attr('rel');
+  if (this.value == 'select' || this.value == 'radio' || this.value == 'checkbox') {
+    $('#field-values'+ rel).show();
+  } else {
+    $('#field-values'+ rel).hide();
+    $('#field-values'+ rel + ' tbody').html('');
+  }
+
+  if (this.value == 'text' || this.value == 'textarea' || this.value == 'number' || this.value == 'telephone' || this.value == 'email' || this.value == 'email_exists' || this.value == 'date' || this.value == 'time' || this.value == 'datetime' || this.value == 'postcode' || this.value == 'address') {
+    $('.field-placeholder'+ rel).show();
+  } else {
+    $('.field-placeholder'+ rel).hide();
+  }
+});
+$('.field-type').trigger('change');
+
+$(document).delegate('.field-required', 'change', function() {
+  var rel = $(this).attr('rel');
+  if (this.value == '1') {
+    $('.field-error'+ rel).show();
+  } else {
+    $('.field-error'+ rel).hide();
+  }
+});
+
+$('.field-required').trigger('change');
+
+{% if not fields %}
+  addField();
+{% endif %}
+//--></script>
+<script type="text/javascript"><!--
+$(document).ready(function() {
+  $("#pageformfields").sortable({
+    cursor: "move",
+    stop: function() {
+      $('#pageformfields .pageformfields-li').each(function() {
+        $($(this).find('a').attr('href')).find('.field-sortorder').val(($(this).index() + 1));
+      });
+    }
+  });
+});
+//--></script>
+<style>
+.pageformfields-li i.pull-right{
+  margin-top: 2px;
+}
+
+.adfieldbutton{
+  border-top: 1px solid #ccc;
+  margin-top: 20px;
+  padding-top: 5px;
+}
+#tab-fields .control-label {
+  text-align: left !important;
+  margin-bottom: 4px;
+}
+.nav > li > a{
+  padding: 15px;
+}
+</style>
+</div>
+{{ footer }}
